@@ -1,0 +1,7 @@
+{
+  "name": "Portafolio_Proyectos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
