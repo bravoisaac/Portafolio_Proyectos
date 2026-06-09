@@ -1,0 +1,41 @@
+:root {
+  --canvas: #101010;
+  --void: #080808;
+  --edge: #212121;
+  --surface: #333333;
+  --ash: #5a5a5a;
+  --graphite: #888888;
+  --smoke: #949494;
+  --silver: #c1c1c1;
+  --frost: #f3f3f3;
+  --white: #ffffff;
+  --amber: #e7c59a;
+  --radius-control: 8px;
+  --radius-card: 20px;
+  --radius-pill: 99px;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--frost);
+  font-family: Inter, Satoshi, "General Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  letter-spacing: 0;
+}

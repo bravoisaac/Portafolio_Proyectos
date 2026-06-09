@@ -1,0 +1,172 @@
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand-row">
+      <a class="brand" href="#hero">Junio CodeLab</a>
+      <span class="divider"></span>
+      <nav aria-label="Secciones">
+        <a href="#tests">Pruebas</a>
+        <a href="#editor">Editor</a>
+        <a href="#creator">Crear</a>
+      </nav>
+    </div>
+    <button class="pill-button" type="button" (click)="scrollToCreator()">
+      <span aria-hidden="true"></span>
+      Nueva prueba
+    </button>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <p class="status"><span></span> Portafolio personal - Junio 2026</p>
+      <h1>Pruebas teoricas con retos de codigo ejecutables.</h1>
+      <p class="hero-copy">
+        Una vitrina para crear, mostrar y resolver desafios tecnicos con descripcion, enunciado,
+        editor, ejecucion y salida en vivo.
+      </p>
+      <div class="hero-actions">
+        <a class="primary-button" href="#editor">Empezar reto</a>
+        <a class="outline-button" href="#creator">Agregar prueba</a>
+      </div>
+      <div class="code-map" aria-hidden="true"></div>
+    </section>
+
+    <section class="workspace" id="tests">
+      <aside class="test-panel" aria-label="Listado de pruebas">
+        <div class="section-heading">
+          <p>Biblioteca</p>
+          <h2>Retos de junio</h2>
+        </div>
+
+        <div class="filters" role="tablist" aria-label="Filtros de dificultad">
+          @for (level of levels; track level) {
+            <button
+              class="filter"
+              [class.active]="filter === level"
+              type="button"
+              (click)="setFilter(level)"
+            >
+              {{ level }}
+            </button>
+          }
+        </div>
+
+        <div class="test-list">
+          @for (test of visibleTests; track test.id) {
+            <button
+              class="test-card"
+              [class.active]="test.id === selectedId"
+              type="button"
+              (click)="selectTest(test.id)"
+            >
+              <strong>{{ test.title }}</strong>
+              <span>{{ test.category }} - {{ test.level }} - {{ test.time }}</span>
+            </button>
+          }
+        </div>
+      </aside>
+
+      <section class="challenge-panel" id="editor">
+        <div class="challenge-meta">
+          <span>{{ selectedTest.level }}</span>
+          <span>{{ selectedTest.time }}</span>
+          <span>{{ selectedTest.language }}</span>
+        </div>
+
+        <div class="challenge-header">
+          <div>
+            <p class="eyebrow">{{ selectedTest.category }}</p>
+            <h2>{{ selectedTest.title }}</h2>
+          </div>
+          <button class="outline-button small" type="button" (click)="resetCode()">Reiniciar</button>
+        </div>
+
+        <p class="description">{{ selectedTest.description }}</p>
+
+        <div class="brief">
+          <p>Reto</p>
+          <div>{{ selectedTest.prompt }}</div>
+        </div>
+
+        <div class="editor-grid">
+          <label class="code-area">
+            <span>Codigo</span>
+            <textarea [(ngModel)]="workingCode" spellcheck="false"></textarea>
+          </label>
+
+          <section class="result-area" aria-live="polite">
+            <div class="result-toolbar">
+              <span>Resultado</span>
+              <button class="primary-button small" type="button" (click)="runCode()">Ejecutar</button>
+            </div>
+            <pre>{{ output }}</pre>
+          </section>
+        </div>
+      </section>
+    </section>
+
+    <section class="creator" id="creator">
+      <div class="section-heading centered">
+        <p>Constructor</p>
+        <h2>Crea una prueba teorica nueva</h2>
+      </div>
+
+      <form class="creator-form" #creatorForm="ngForm" (ngSubmit)="addTest()">
+        <label>
+          <span>Titulo</span>
+          <input name="title" required [(ngModel)]="form.title" placeholder="Ej: Promesas y asincronia" />
+        </label>
+
+        <div class="form-row">
+          <label>
+            <span>Categoria</span>
+            <input name="category" required [(ngModel)]="form.category" placeholder="JavaScript" />
+          </label>
+
+          <label>
+            <span>Dificultad</span>
+            <select name="level" [(ngModel)]="form.level">
+              <option value="Basico">Basico</option>
+              <option value="Intermedio">Intermedio</option>
+              <option value="Avanzado">Avanzado</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Tiempo</span>
+            <input name="time" required [(ngModel)]="form.time" />
+          </label>
+        </div>
+
+        <label>
+          <span>Descripcion</span>
+          <textarea
+            name="description"
+            required
+            [(ngModel)]="form.description"
+            placeholder="Que evalua esta prueba"
+          ></textarea>
+        </label>
+
+        <label>
+          <span>Reto</span>
+          <textarea
+            name="prompt"
+            required
+            [(ngModel)]="form.prompt"
+            placeholder="Indica lo que debe resolver la persona"
+          ></textarea>
+        </label>
+
+        <label>
+          <span>Codigo inicial</span>
+          <textarea name="code" required [(ngModel)]="form.code" spellcheck="false"></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button class="primary-button" type="submit" [disabled]="creatorForm.invalid">Guardar prueba</button>
+          <button class="outline-button" type="button" (click)="clearCustomTests()">Limpiar creadas</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
