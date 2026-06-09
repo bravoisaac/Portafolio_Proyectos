@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "preview": "node tools/serve-dist.cjs",
+    "screenshots": "node tools/capture-readme.cjs",
     "verify:ui": "node tools/verify-playwright.cjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

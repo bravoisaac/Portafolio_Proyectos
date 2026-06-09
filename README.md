@@ -1,59 +1,97 @@
-# JunioCodelab
+# Junio CodeLab
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.14.
+App Angular para crear, filtrar y resolver pruebas teoricas con retos de codigo ejecutables. Esta pensada como pieza de portafolio para mostrar experiencia creando ejercicios tecnicos por categoria, dificultad y stack.
 
-## Development server
+![Vista completa de Junio CodeLab](docs/images/home-full.png)
 
-To start a local development server, run:
+## Que hace
+
+- Crea pruebas teoricas con titulo, categoria, dificultad, descripcion, reto y codigo inicial.
+- Muestra retos por categorias como JavaScript, Python, SQL, Angular, React, Backend, Frontend, APIs, Testing, Logica y Asincronia.
+- Filtra por dificultad: Todas, Basico, Intermedio y Avanzado.
+- Pagina el listado de pruebas de 6 en 6.
+- Ejecuta codigo JavaScript desde el navegador y muestra el resultado.
+- Guarda pruebas creadas en `localStorage`.
+- Incluye retos con PokeAPI: `https://pokeapi.co/api/v2/pokemon/{id o nombre}`.
+
+## Capturas
+
+### Biblioteca y editor
+
+![Biblioteca de pruebas con filtros y editor](docs/images/tests-paginator.png)
+
+### Resultado PokeAPI
+
+![Resultado de prueba PokeAPI](docs/images/pokeapi-result.png)
+
+## Stack
+
+- Angular 21
+- TypeScript
+- CSS
+- Playwright para verificacion visual
+- PokeAPI como API publica de ejemplo
+
+## Categorias incluidas
+
+- JavaScript
+- Python
+- SQL
+- Angular
+- React
+- Backend
+- Frontend
+- APIs
+- Testing
+- Logica
+- Asincronia
+
+## Ejecutar localmente
+
+Instala dependencias:
 
 ```bash
-ng serve
+npm.cmd install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Compila la app:
 
 ```bash
-ng generate component component-name
+npm.cmd run build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Sirve la version compilada:
 
 ```bash
-ng generate --help
+npm.cmd run preview
 ```
 
-## Building
+Abre:
 
-To build the project run:
+```text
+http://localhost:4200
+```
+
+## Modo desarrollo
 
 ```bash
-ng build
+npm.cmd start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+En este entorno, `preview` suele ser mas estable porque sirve directamente el build generado.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Verificacion
 
 ```bash
-ng test
+npm.cmd run verify:ui
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Generar capturas para el README:
 
 ```bash
-ng e2e
+npm.cmd run screenshots
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Nota sobre PokeAPI
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Los retos de PokeAPI intentan consultar la API real. Si el navegador o el entorno bloquea llamadas externas dentro del runner, la prueba usa un fallback local para que siempre exista una salida visible y evaluable.
