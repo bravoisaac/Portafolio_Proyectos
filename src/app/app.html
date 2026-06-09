@@ -37,21 +37,40 @@
           <h2>Retos de junio</h2>
         </div>
 
-        <div class="filters" role="tablist" aria-label="Filtros de dificultad">
-          @for (level of levels; track level) {
-            <button
-              class="filter"
-              [class.active]="filter === level"
-              type="button"
-              (click)="setFilter(level)"
-            >
-              {{ level }}
-            </button>
-          }
+        <div class="filter-block">
+          <span>Dificultad</span>
+          <div class="filters" role="tablist" aria-label="Filtros de dificultad">
+            @for (level of levels; track level) {
+              <button
+                class="filter"
+                [class.active]="levelFilter === level"
+                type="button"
+                (click)="setLevelFilter(level)"
+              >
+                {{ level }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="filter-block">
+          <span>Categoria</span>
+          <div class="filters" role="tablist" aria-label="Filtros de categoria">
+            @for (category of categories; track category) {
+              <button
+                class="filter"
+                [class.active]="categoryFilter === category"
+                type="button"
+                (click)="setCategoryFilter(category)"
+              >
+                {{ category }}
+              </button>
+            }
+          </div>
         </div>
 
         <div class="test-list">
-          @for (test of visibleTests; track test.id) {
+          @for (test of paginatedTests; track test.id) {
             <button
               class="test-card"
               [class.active]="test.id === selectedId"
@@ -63,44 +82,79 @@
             </button>
           }
         </div>
+
+        @if (visibleTests.length > pageSize) {
+          <div class="pagination" aria-label="Paginacion de pruebas">
+            <button
+              class="page-button"
+              type="button"
+              [disabled]="currentPage === 1"
+              (click)="goToPage(currentPage - 1)"
+            >
+              Anterior
+            </button>
+
+            <span>{{ paginationStart }}-{{ paginationEnd }} de {{ visibleTests.length }}</span>
+
+            <button
+              class="page-button"
+              type="button"
+              [disabled]="currentPage === totalPages"
+              (click)="goToPage(currentPage + 1)"
+            >
+              Siguiente
+            </button>
+          </div>
+        }
       </aside>
 
       <section class="challenge-panel" id="editor">
-        <div class="challenge-meta">
-          <span>{{ selectedTest.level }}</span>
-          <span>{{ selectedTest.time }}</span>
-          <span>{{ selectedTest.language }}</span>
-        </div>
-
-        <div class="challenge-header">
-          <div>
-            <p class="eyebrow">{{ selectedTest.category }}</p>
-            <h2>{{ selectedTest.title }}</h2>
+        @if (visibleTests.length) {
+          <div class="challenge-meta">
+            <span>{{ selectedTest.level }}</span>
+            <span>{{ selectedTest.time }}</span>
+            <span>{{ selectedTest.language }}</span>
           </div>
-          <button class="outline-button small" type="button" (click)="resetCode()">Reiniciar</button>
-        </div>
 
-        <p class="description">{{ selectedTest.description }}</p>
-
-        <div class="brief">
-          <p>Reto</p>
-          <div>{{ selectedTest.prompt }}</div>
-        </div>
-
-        <div class="editor-grid">
-          <label class="code-area">
-            <span>Codigo</span>
-            <textarea [(ngModel)]="workingCode" spellcheck="false"></textarea>
-          </label>
-
-          <section class="result-area" aria-live="polite">
-            <div class="result-toolbar">
-              <span>Resultado</span>
-              <button class="primary-button small" type="button" (click)="runCode()">Ejecutar</button>
+          <div class="challenge-header">
+            <div>
+              <p class="eyebrow">{{ selectedTest.category }}</p>
+              <h2>{{ selectedTest.title }}</h2>
             </div>
-            <pre>{{ output }}</pre>
-          </section>
-        </div>
+            <button class="outline-button small" type="button" (click)="resetCode()">Reiniciar</button>
+          </div>
+
+          <p class="description">{{ selectedTest.description }}</p>
+
+          <div class="brief">
+            <p>Reto</p>
+            <div>{{ selectedTest.prompt }}</div>
+          </div>
+
+          <div class="editor-grid">
+            <label class="code-area">
+              <span>Codigo</span>
+              <textarea [(ngModel)]="workingCode" spellcheck="false"></textarea>
+            </label>
+
+            <section class="result-area" aria-live="polite">
+              <div class="result-toolbar">
+                <span>Resultado</span>
+                <button class="primary-button small" type="button" (click)="runCode()">Ejecutar</button>
+              </div>
+              <pre>{{ output }}</pre>
+            </section>
+          </div>
+        } @else {
+          <div class="empty-state">
+            <p class="eyebrow">Sin resultados</p>
+            <h2>No hay pruebas para estos filtros.</h2>
+            <p class="description">
+              Cambia la dificultad, la categoria o crea una prueba nueva desde el constructor.
+            </p>
+            <a class="primary-button" href="#creator">Crear prueba</a>
+          </div>
+        }
       </section>
     </section>
 
@@ -119,7 +173,11 @@
         <div class="form-row">
           <label>
             <span>Categoria</span>
-            <input name="category" required [(ngModel)]="form.category" placeholder="JavaScript" />
+            <select name="category" [(ngModel)]="form.category">
+              @for (category of categoryOptions; track category) {
+                <option [value]="category">{{ category }}</option>
+              }
+            </select>
           </label>
 
           <label>

@@ -39,6 +39,8 @@ const server = http.createServer((request, response) => {
   page.on('pageerror', (error) => consoleErrors.push(error.message));
 
   await page.goto(`http://localhost:${port}`, { waitUntil: 'networkidle' });
+  await page.evaluate(() => localStorage.clear());
+  await page.reload({ waitUntil: 'networkidle' });
   await page.screenshot({ path: 'output/playwright/junio-codelab.png', fullPage: true });
 
   const title = await page.locator('h1').innerText({ timeout: 5000 });
@@ -46,7 +48,13 @@ const server = http.createServer((request, response) => {
   await page.waitForTimeout(500);
 
   const output = await page.locator('pre').innerText();
-  console.log(JSON.stringify({ title, output, consoleErrors }, null, 2));
+  await page.getByRole('button', { name: 'Python', exact: true }).click();
+  await page.getByRole('button', { name: 'Python: crear API con PokeAPI' }).click();
+  await page.getByRole('button', { name: 'Ejecutar' }).click();
+  await page.waitForTimeout(9000);
+
+  const pokeOutput = await page.locator('pre').innerText();
+  console.log(JSON.stringify({ title, output, pokeOutput, consoleErrors }, null, 2));
 
   await browser.close();
 })()
